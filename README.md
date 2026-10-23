@@ -1,54 +1,155 @@
 # fifo-rm-edf-semaphore-monitor-comparison
 Educational Python simulation comparing FIFO, Rate Monotonic (RM), and Earliest Deadline First (EDF) scheduling with semaphore and monitor synchronization.
-Comparative Study of FIFO, Rate Monotonic (RM), and Earliest Deadline First (EDF) Scheduling with Semaphore and Monitor Synchronization
-This repository contains an educational Python simulation and the accompanying paper comparing three CPU scheduling policies—FIFO, Rate Monotonic (RM), and Earliest Deadline First (EDF)—in task sets that access a shared resource. The project also explores semaphore- and monitor-labelled synchronization configurations and exports per-job and summary data to CSV files.
-Model scope: This is a simplified, discrete-time teaching model, not a production real-time operating-system scheduler. In the current implementation, SEM and MON use closely related queue/handoff mechanics and therefore do not represent a complete behavioral comparison of real semaphore and monitor implementations. Priority inheritance is not modeled. The paper's schematic Gantt figure is illustrative rather than a plot generated from the simulation output.
+# FIFO, RM, and EDF Scheduling with Semaphore and Monitor
 
-Repository contents
-- fifo_rm_edf_sem_monitor_comparison.py — Python simulation source code.
-- FIFO_RM_EDF_SEM_MON_Comparison_final.pdf — paper in PDF format.
-- FIFO_RM_EDF_SEM_MON_Comparison_final.docx — editable paper.
-- sem_mon_summary.csv — generated aggregate metrics (created when the script runs).
-- sem_mon_job_details.csv — generated per-job timing details (created when the script runs).
-- sem_mon_gantt.csv — generated compressed execution intervals (created when the script runs).
-Scheduling policies
-- FIFO: non-preemptive scheduling in release order.
-- RM: preemptive fixed-priority scheduling; tasks with shorter periods receive higher priority.
-- EDF: preemptive dynamic-priority scheduling; jobs with earlier absolute deadlines receive higher priority.
-Task sets
-Task set A
-Task	Execution time (C)	Period (T)	Relative deadline (D)
-A	1	4	4
-B	2	5	5
-C	3	10	10
+## Overview
 
+This project presents a Python-based simulation and comparative study of three CPU scheduling algorithms: First-In, First-Out (FIFO), Rate Monotonic (RM), and Earliest Deadline First (EDF). It also discusses synchronization mechanisms, focusing on semaphores and monitors, for managing access to shared resources in real-time systems.
 
-Hyperperiod: 20 time units. Total utilization: 0.95.
-Task set B
-Task	Execution time (C)	Period (T)	Relative deadline (D)
-X	2	5	5
-Y	4	7	7
+The project accompanies a research paper that explains the scheduling algorithms, task sets, simulation methodology, evaluation metrics, and limitations.
 
+## Objectives
 
-Hyperperiod: 35 time units. Total utilization: approximately 0.9714.
+- Compare FIFO, Rate Monotonic (RM), and Earliest Deadline First (EDF) scheduling.
+- Explore synchronization concepts using semaphores and monitors.
+- Simulate periodic real-time tasks with execution times, periods, and deadlines.
+- Generate CSV files containing scheduling summaries and job-level information.
+- Provide a reproducible educational example for real-time operating systems.
 
-The critical section is placed at the end of each job and has length min(2, C). Scheduling decisions occur at integer time boundaries. The simulation uses one shared resource and does not model priority inheritance.
-Requirements
-- Python 3.10 or newer (the script uses modern type-union syntax).
-- No third-party packages are required; the simulation uses the Python standard library.
-Run
-From this directory, execute:
+## Scheduling Algorithms
+
+### 1. First-In, First-Out (FIFO)
+
+FIFO schedules tasks in arrival order. In this simulation, it uses non-preemptive execution.
+
+### 2. Rate Monotonic (RM)
+
+RM is a fixed-priority scheduling algorithm. Tasks with shorter periods receive higher priorities. The simulation models preemption at discrete time intervals.
+
+### 3. Earliest Deadline First (EDF)
+
+EDF is a dynamic-priority scheduling algorithm. The task with the earliest absolute deadline receives the highest priority. The simulation models preemption at discrete time intervals.
+
+## Synchronization Mechanisms
+
+### Semaphore
+
+A semaphore is a synchronization mechanism used to control access to shared resources and coordinate concurrent activities.
+
+### Monitor
+
+A monitor encapsulates shared data and the operations that access it. In concurrent systems, monitor implementations commonly use mutual exclusion and condition variables.
+
+**Implementation note:** The current simulation uses a simplified shared-resource model. Semaphore and monitor labels do not yet represent fully distinct synchronization implementations. Therefore, the results should be interpreted as educational scheduling results rather than a definitive experimental comparison of semaphore and monitor behavior.
+
+## Task Sets
+
+The simulation uses two example task sets.
+
+### Task Set A
+
+| Task | Execution Time (C) | Period (T) | Deadline (D) |
+|---|---:|---:|---:|
+| A | 1 | 4 | 4 |
+| B | 2 | 5 | 5 |
+| C | 3 | 10 | 10 |
+
+- Hyperperiod: 20 time units
+- Total utilization: 0.95
+
+### Task Set B
+
+| Task | Execution Time (C) | Period (T) | Deadline (D) |
+|---|---:|---:|---:|
+| X | 2 | 5 | 5 |
+| Y | 4 | 7 | 7 |
+
+- Hyperperiod: 35 time units
+- Total utilization: approximately 0.9714
+
+## Requirements
+
+- Python 3.10 or later
+- No third-party packages are required for the basic simulation, unless additional plotting functionality is added.
+
+## How to Run
+
+Clone the repository:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/fifo-rm-edf-semaphore-monitor-comparison.git
+cd fifo-rm-edf-semaphore-monitor-comparison
+```
+
+Run the simulation:
+
+```bash
 python fifo_rm_edf_sem_monitor_comparison.py
-The program prints a compact summary and writes three CSV files into the current working directory:
-1. sem_mon_summary.csv
-2. sem_mon_job_details.csv
-3. sem_mon_gantt.csv
-Run the script from a writable directory so the CSV files can be created.
-Metrics exported
-The summary includes average waiting time, turnaround time, response time, resource waiting time, block time, deadline misses, and idle time. The job-level file includes release time, deadline, first start, completion time, and derived timing metrics. Interpret the metrics in light of the simplified model and its assumptions.
-Limitations and future work
-This code is intended for learning and reproducibility. Before using it to support strong research conclusions, the model should be validated and extended to implement semaphores and monitors with clearly distinct semantics, accurately handle blocking and ready queues, define whether jobs can be suspended while holding the resource, and test against hand-calculated schedules. Further extensions could include priority inheritance/ceiling protocols, context-switch overhead, release jitter, and larger task sets.
-Suggested citation
-Barati, Erfan. A Comparative Study of FIFO, Rate Monotonic (RM), and Earliest Deadline First (EDF) Scheduling with Semaphore and Monitor Synchronization. Accompanying paper and educational simulation, 2026.
-License
-No license is specified yet. Add a license file before inviting reuse or redistribution under explicit terms.
+```
+
+Replace `YOUR_USERNAME` with your GitHub username.
+
+## Output Files
+
+After execution, the program is expected to generate the following CSV files:
+
+- `sem_mon_summary.csv` — summary of scheduling metrics.
+- `sem_mon_job_details.csv` — job-level execution and scheduling information.
+- `sem_mon_gantt.csv` — compressed execution intervals that can be used to build Gantt charts.
+
+The exact contents depend on the simulation implementation and its configuration.
+
+## Evaluation Metrics
+
+The study discusses scheduling metrics such as:
+
+- CPU utilization
+- Job completion times
+- Deadline misses
+- Response and turnaround times, where supported by the simulation output
+- Scheduling behavior under different task priorities
+
+Metrics should only be interpreted when they are explicitly calculated by the code. Theoretical expectations and simulated measurements are not interchangeable.
+
+## Project Structure
+
+```text
+fifo-rm-edf-semaphore-monitor-comparison/
+├── README.md
+├── fifo_rm_edf_sem_monitor_comparison.py
+├── FIFO_RM_EDF_SEM_MON_Comparison_final.pdf
+├── FIFO_RM_EDF_SEM_MON_Comparison_final.docx
+└── .gitignore
+```
+
+## Limitations
+
+- The simulation uses discrete time steps.
+- FIFO is modeled as non-preemptive, while RM and EDF are modeled as preemptive.
+- The shared-resource and critical-section model is simplified.
+- Priority inheritance and other advanced real-time synchronization protocols are not fully modeled.
+- The current semaphore and monitor variants do not yet implement all of their distinct synchronization semantics.
+- Illustrative Gantt charts should not be treated as measured execution traces unless generated directly from the simulation output.
+
+## Future Improvements
+
+- Implement genuinely distinct semaphore and monitor synchronization mechanisms.
+- Add blocking, waiting queues, and resource-contention behavior.
+- Model priority inversion and priority inheritance.
+- Generate Gantt charts directly from simulation results.
+- Add automated tests and broader task-set experiments.
+- Compare deadline-miss rates and response-time distributions across multiple workloads.
+
+## Research Paper
+
+The repository includes the accompanying paper in PDF and DOCX formats. Please consult the paper for the detailed methodology, figures, discussion, and references.
+
+## License
+
+No license has been specified yet. Add an appropriate open-source license before allowing others to reuse or redistribute this project.
+
+## Author
+
+**Erfan Barati**
+
+This project is intended for educational and research purposes in real-time systems, CPU scheduling, and synchronization mechanisms.
